@@ -53,6 +53,15 @@ const Api = {
       }
     })
   },
+  getRequest: (route, callback, errorCallback = null) => {
+    fetch(route).then(response => response.json()).then(json => {
+      callback(json)
+    }).catch(error => {
+      if(errorCallback){
+        errorCallback(error)
+      }
+    })
+  },
   upload: (route, parameter, callback, errorCallback = null) => {
     console.log('route', Data.token ? route + '?token=' + Data.token : route)
     const apiRoute = Data.token ? route + '?token=' + Data.token : route;
