@@ -1,12 +1,17 @@
 import { Routes } from 'common';
 import Data from 'services/Data';
 import axios from 'axios';
+import DeviceInfo from 'react-native-device-info';
 const Api = {
   authenticate: (username, password, callback, errorCallback = null) => {
     const body = {
       username: username,
       password: password,
-      status: 'VERIFIED'
+      status: 'VERIFIED',
+      device: {
+        unique_code: DeviceInfo.getUniqueId(),
+        model: DeviceInfo.getModel()
+      }
     };
     const fetchOptions = {
       method: 'POST',
@@ -24,6 +29,10 @@ const Api = {
   },
   getAuthUser: (token, callback, errorCallback = null) => {
     const body = {
+      device: {
+        unique_code: DeviceInfo.getUniqueId(),
+        model: DeviceInfo.getModel()
+      }
     };
     const fetchOptions = {
       method: 'POST',
@@ -43,7 +52,13 @@ const Api = {
     const fetchOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify(parameter)
+      body: JSON.stringify({
+        ...parameter,
+        device: {
+          unique_code: DeviceInfo.getUniqueId(),
+          model: DeviceInfo.getModel()
+        }
+      })
     }
     fetch(apiRoute, fetchOptions).then(response => response.json()).then(json => {
       callback(json)
@@ -69,7 +84,13 @@ const Api = {
     axios({
       url: apiRoute,
       method: 'POST',
-      data: parameter,
+      data: {
+        ...parameter, 
+        device: {
+          unique_code: DeviceInfo.getUniqueId(),
+          model: DeviceInfo.getModel()
+        }
+      },
       headers: {
         Accept: 'application/json', 'Content-Type': 'multipart/form-data'
       }
@@ -88,7 +109,13 @@ const Api = {
     const apiRoute = Data.token ? route + '?token=' + Data.token : route;
     fetch(apiRoute, {
       method: "POST",
-      body: parameter,
+      body: {
+        ...parameter, 
+        device: {
+          unique_code: DeviceInfo.getUniqueId(),
+          model: DeviceInfo.getModel()
+        }
+      },
       headers: {
         'Content-Type': 'multipart/form-data'
       }
