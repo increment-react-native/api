@@ -51,7 +51,7 @@ const Api = {
     const apiRoute = Data.token ? route + '?token=' + Data.token : route;
     const fetchOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Data.token},
       body: JSON.stringify({
         ...parameter,
         device: {
