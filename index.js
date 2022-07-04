@@ -84,19 +84,13 @@ const Api = {
     axios({
       url: apiRoute,
       method: 'POST',
-      data: {
-        ...parameter, 
-        device: {
-          unique_code: DeviceInfo.getUniqueId(),
-          model: DeviceInfo.getModel()
-        }
-      },
+      data: parameter,
       headers: {
         Accept: 'application/json', 'Content-Type': 'multipart/form-data'
       }
     })
     .then(response => {
-      callback(response)
+      callback(response.data)
     })
     .catch(function (error) {
       console.info(error.config)
