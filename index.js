@@ -62,7 +62,7 @@ const Api = {
     console.log({
       apiRoute,
       route,
-      parameter
+      fetchOptions
     })
     fetch(apiRoute, fetchOptions).then(response => response.json()).then(json => {
       callback(json)
@@ -73,6 +73,9 @@ const Api = {
     })
   },
   getRequest: (route, callback, errorCallback = null) => {
+    console.log({
+      route
+    })
     fetch(route).then(response => response.json()).then(json => {
       callback(json)
     }).catch(error => {
