@@ -18,7 +18,6 @@ const Api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     };
-    console.log(body, Routes.auth);
     fetch(Routes.auth, fetchOptions).then((response) => response.json()).then((json) => {
       callback(json);
     }).catch((error) => {
@@ -60,6 +59,11 @@ const Api = {
         }
       })
     }
+    console.log({
+      apiRoute,
+      route,
+      parameter
+    })
     fetch(apiRoute, fetchOptions).then(response => response.json()).then(json => {
       callback(json)
     }).catch(error => {
