@@ -93,8 +93,7 @@ const Api = {
       method: 'POST',
       data: parameter,
       headers: {
-       'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + Data.token
+       'Content-Type': 'multipart/form-data'
       }
     })
     .then(response => {
@@ -119,8 +118,7 @@ const Api = {
         }
       },
       headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + Data.token
+        'Content-Type': 'multipart/form-data'
       }
     })
     .then(response => response.json())
