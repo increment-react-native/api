@@ -93,14 +93,14 @@ const Api = {
       method: 'POST',
       data: parameter,
       headers: {
-        Accept: 'application/json', 'Content-Type': 'multipart/form-data'
+       'Content-Type': 'multipart/form-data'
       }
     })
     .then(response => {
       callback(response.data)
     })
     .catch(function (error) {
-      console.info(error.config)
+      console.info('[ERROR]', error.config)
       if(errorCallback){
         errorCallback(error)
       }
