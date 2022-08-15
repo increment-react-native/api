@@ -100,7 +100,7 @@ const Api = {
       callback(response.data)
     })
     .catch(function (error) {
-      console.info('[ERROR]', error.config)
+      console.info('[ERROR]', error)
       if(errorCallback){
         errorCallback(error)
       }
