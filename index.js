@@ -84,11 +84,11 @@ const Api = {
       }
     })
   },
-  upload: (route, parameter, callback, errorCallback = null) => {
+  upload: async (route, parameter, callback, errorCallback = null) => {
     console.log('route', Data.token ? route + '?token=' + Data.token : route)
     const apiRoute = Data.token ? route + '?token=' + Data.token : route;
     console.log({ apiRoute, parameter })
-    axios({
+    await axios({
       url: apiRoute,
       method: 'POST',
       data: parameter,
