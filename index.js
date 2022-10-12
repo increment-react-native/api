@@ -26,13 +26,17 @@ const Api = {
       }
     })
   },
-  getAuthUser: (token, callback, errorCallback = null) => {
-    const body = {
+  getAuthUser: (token, callback, errorCallback = null, position = null) => {
+    let body = {
       device: {
         unique_code: DeviceInfo.getUniqueId(),
         model: DeviceInfo.getModel()
-      }
+      },
     };
+    if(position != null){
+      body['position'] = 'first'
+    }
+    console.log('AUTHENTICATE', body);
     const fetchOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
