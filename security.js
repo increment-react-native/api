@@ -1,7 +1,7 @@
 
 var CryptoJS = require('crypto-js');
-global.atob = require("atob");
-var config = require('../../config');
+import {decode as atob, encode} from 'base-64'
+import config from '../../config.js'
 
 var CryptoJSAesJson = {
     stringify: function (cipherParams) {
@@ -21,8 +21,12 @@ var CryptoJSAesJson = {
 class Decryption {
     #str_to_decode;
 
-    constructor(str_to_decode){
-        this.str_to_decode = str_to_decode;
+    constructor(){
+        this.str_to_decode = null;
+    }
+
+    setStringToDecode(string){
+        this.#str_to_decode = string
     }
     
     hex_to_ascii() {
@@ -36,10 +40,9 @@ class Decryption {
     }
     
     decrypt() {
-        var hex = hex_to_ascii(this.#str_to_decode)
+        var hex = this.hex_to_ascii(this.#str_to_decode)
         var encrypted = atob(hex)
         var decrypted = JSON.parse(CryptoJS.AES.decrypt(encrypted, config.SECRET, { format: CryptoJSAesJson }).toString(CryptoJS.enc.Utf8));
-    
         return decrypted;
     }
 }
@@ -47,8 +50,12 @@ class Decryption {
 class Encrypt {
     #str_to_hash;
     
-    constructor(str_to_hash){
-        this.#str_to_hash =  str_to_hash
+    constructor(){
+        this.#str_to_hash =  null
+    }
+
+    setStringToHash(string){
+        this.#str_to_hash = string;
     }
 
     get encryptMethodLength() {
@@ -84,10 +91,10 @@ class Encrypt {
             'salt': CryptoJS.enc.Hex.stringify(salt),
             'iterations': iterations
         };
-        console.log(CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(output))));
+        // console.log('?????????????//////////', CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(output))));
         return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(output)));
     }
 
 }
 
-export default {Decryption, Encrypt};
+export {Decryption, Encrypt};
