@@ -36,7 +36,6 @@ const Api = {
     if(position != null){
       body['position'] = 'first'
     }
-    console.log('AUTHENTICATE', body);
     const fetchOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,11 +62,10 @@ const Api = {
         }
       })
     }
-    console.log({
-      apiRoute,
-      route,
-      fetchOptions
-    })
+    // console.log({
+    //   apiRoute,
+    //   fetchOptions
+    // })
     fetch(apiRoute, fetchOptions).then(response => response.json()).then(json => {
       callback(json)
     }).catch(error => {
@@ -77,9 +75,9 @@ const Api = {
     })
   },
   getRequest: (route, callback, errorCallback = null) => {
-    console.log({
-      route
-    })
+    // console.log({
+    //   route
+    // })
     fetch(route).then(response => response.json()).then(json => {
       callback(json)
     }).catch(error => {
@@ -89,9 +87,9 @@ const Api = {
     })
   },
   upload: async (route, parameter, callback, errorCallback = null) => {
-    console.log('route', Data.token ? route + '?token=' + Data.token : route)
+    // console.log('route', Data.token ? route + '?token=' + Data.token : route)
     const apiRoute = Data.token ? route + '?token=' + Data.token : route;
-    console.log({ apiRoute, parameter })
+    // console.log({ apiRoute, parameter })
     await axios({
       url: apiRoute,
       method: 'POST',
