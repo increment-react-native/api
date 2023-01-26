@@ -1,28 +1,22 @@
 
 import AWS from 'aws-sdk'
 
-const awsConfig = {
-    region: 'us-east-1',
-    accessKeyId: 'AWS ACCESS KEY ID',
-    acecesSecretKey: 'AWS SECRET KEY'
-}
+AWS.config.update({region: 'us-west-1'});
 
-AWS.config.update({awsConfig})
 const kms = new AWS.KMS();
 
-
-const generateKey = () => {
-    var params = {
-        KeySpec: 'RSA_4096',
-        KeyUsage: 'ENCRYPT_DECRYPT'
-    }
-    kms.createKey(params, (err, response) => {
-        if (err) console.log(err, err.stack);
-        else console.log('[response]', response);
-    })
+const getParams = (data) => {
+    const params = {
+        KeyId: 'ce5724td-c97c-4bc5-8e53-6d0a6a85f01b', /* required */
+        Plaintext: 'MESSAGE' /* required */
+    };
+    return params;
 }
 const encrypt = (data) => {
-    generateKey();
+    kms.encrypt(getParams(data), ((err, response) => {
+        if(err) console.log(err);
+        else console.log(response);
+    }))
 }
 
 const decrypt = (data) => {

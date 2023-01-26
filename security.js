@@ -1,6 +1,6 @@
 
 var CryptoJS = require('crypto-js');
-import {decode as atob, encode} from 'base-64'
+import { decode as atob, encode } from 'base-64'
 import config from '../../config.js'
 
 var CryptoJSAesJson = {
@@ -21,14 +21,14 @@ var CryptoJSAesJson = {
 class Decryption {
     #str_to_decode;
 
-    constructor(){
+    constructor() {
         this.str_to_decode = null;
     }
 
-    setStringToDecode(string){
+    setStringToDecode(string) {
         this.#str_to_decode = string
     }
-    
+
     hex_to_ascii() {
         var str1 = this.#str_to_decode
         var hex = str1.toString();
@@ -38,23 +38,31 @@ class Decryption {
         }
         return str;
     }
-    
+
     decrypt() {
-        var hex = this.hex_to_ascii(this.#str_to_decode)
-        var encrypted = atob(hex)
-        var decrypted = JSON.parse(CryptoJS.AES.decrypt(encrypted, config.SECRET, { format: CryptoJSAesJson }).toString(CryptoJS.enc.Utf8));
+        // var hex = this.hex_to_ascii(this.#str_to_decode)
+        // var encrypted = atob(hex)
+        var hex = this.#str_to_decode, // ASCII HEX: 37="7", 57="W", 71="q"
+            bytes = [],
+            str;
+
+        for (var i = 0; i < hex.length - 1; i += 2) {
+            bytes.push(parseInt(hex.substr(i, 2), 16));
+        }
+        str = String.fromCharCode.apply(String, bytes);
+        var decrypted = JSON.parse(CryptoJS.AES.decrypt(str, config.SECRET, { format: CryptoJSAesJson }).toString(CryptoJS.enc.Utf8));
         return decrypted;
     }
 }
 
 class Encrypt {
     #str_to_hash;
-    
-    constructor(){
-        this.#str_to_hash =  null
+
+    constructor() {
+        this.#str_to_hash = null
     }
 
-    setStringToHash(string){
+    setStringToHash(string) {
         this.#str_to_hash = string;
     }
 
@@ -79,10 +87,10 @@ class Encrypt {
 
         var salt = CryptoJS.lib.WordArray.random(256);
         var iterations = 999;
-        var encryptMethodLength = (this.encryptMethodLength/4);// example: AES number is 256 / 4 = 64
-        var hashKey = CryptoJS.PBKDF2(key, salt, {'hasher': CryptoJS.algo.SHA512, 'keySize': (encryptMethodLength/8), 'iterations': iterations});
+        var encryptMethodLength = (this.encryptMethodLength / 4);// example: AES number is 256 / 4 = 64
+        var hashKey = CryptoJS.PBKDF2(key, salt, { 'hasher': CryptoJS.algo.SHA512, 'keySize': (encryptMethodLength / 8), 'iterations': iterations });
 
-        var encrypted = CryptoJS.AES.encrypt(this.#str_to_hash, hashKey, {'mode': CryptoJS.mode.CBC, 'iv': iv});
+        var encrypted = CryptoJS.AES.encrypt(this.#str_to_hash, hashKey, { 'mode': CryptoJS.mode.CBC, 'iv': iv });
         var encryptedString = CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
 
         var output = {
@@ -91,10 +99,26 @@ class Encrypt {
             'salt': CryptoJS.enc.Hex.stringify(salt),
             'iterations': iterations
         };
-        // console.log('?????????????//////////', CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(output))));
         return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(output)));
     }
 
 }
 
-export {Decryption, Encrypt};
+const Security = {
+    EncryptData: (string) => {
+        let enc = new Encrypt();
+        enc.setStringToHash(string)
+        return enc.encrypt()
+    },
+
+    DecryptData: (string) => {
+        let dec = new Decryption();
+        dec.setStringToDecode(string);
+        return dec.decrypt()
+    }
+}
+
+
+
+
+export default Security;
