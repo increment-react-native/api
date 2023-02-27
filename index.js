@@ -12,7 +12,8 @@ const Api = {
       status: 'VERIFIED',
       device: {
         unique_code: DeviceInfo.getUniqueId(),
-        model: DeviceInfo.getModel()
+        model: DeviceInfo.getModel(),
+        name: DeviceInfo.getDeviceName()._z
       }
     };
     const fetchOptions = {
@@ -36,7 +37,8 @@ const Api = {
     let body = {
       device: {
         unique_code: DeviceInfo.getUniqueId(),
-        model: DeviceInfo.getModel()
+        model: DeviceInfo.getModel(),
+        name: DeviceInfo.getDeviceName()._z
       },
     };
     if (position != null) {
@@ -65,7 +67,8 @@ const Api = {
       ...parameter,
       device: {
         unique_code: DeviceInfo.getUniqueId(),
-        model: DeviceInfo.getModel()
+        model: DeviceInfo.getModel(),
+        name: DeviceInfo.getDeviceName()._z
       }
     })
     const fetchOptions = {
@@ -133,7 +136,8 @@ const Api = {
         ...parameter,
         device: {
           unique_code: DeviceInfo.getUniqueId(),
-          model: DeviceInfo.getModel()
+          model: DeviceInfo.getModel(),
+          name: DeviceInfo.getDeviceName()._z
         }
       },
       headers: {
