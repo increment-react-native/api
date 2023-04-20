@@ -98,7 +98,18 @@ const Api = {
     // console.log({
     //   route
     // })
-    fetch(route).then(response => response.json()).then(json => {
+    let body = {
+      device: {
+        unique_code: DeviceInfo.getUniqueId(),
+        model: DeviceInfo.getModel(),
+        name: DeviceInfo.getDeviceName()._z
+      },
+    };
+    const fetchOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Data.token }
+    };
+    fetch(route, fetchOptions).then(response => response.json()).then(json => {
       callback(json)
     }).catch(error => {
       if (errorCallback) {
